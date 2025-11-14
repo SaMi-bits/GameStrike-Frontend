@@ -1,213 +1,153 @@
-/* 🌈 Neo-Retro Pop Japonés 2000s */
+/* =========================
+   GameStrike Neo Pop Dream
+   ========================= */
 
-/* ---------- FONDO GLOBAL ---------- */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: "Poppins", "Nunito", sans-serif;
-  background: linear-gradient(135deg, #ffe0f7, #b8e8ff);
+/* Reset y tipografía */
+* { box-sizing: border-box; }
+body, html, #root { height: 100%; margin: 0; }
+body {
+  font-family: "Poppins", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(135deg,#0f1321 0%, #1b1433 50%, #0f2130 100%);
+  color: #eef2ff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
   min-height: 100vh;
-  overflow-x: hidden;
-  color: #1a1a1a;
 }
 
-/* 🌸 Sakura overlay (sutil) */
-.sakura {
-  pointer-events: none;
-  position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path fill="%23ffb8e8" d="M12 .5c1.9 1.9 3.6 4.8.1 7.2-3.6 2.4-1.2 4.8.1 7.2 1.3 2.4-.9 4.8-7.2 0C-1 12 4 2 12 .5z"/></svg>');
-  background-repeat: repeat;
-  opacity: 0.06;
-  animation: drift 20s linear infinite;
-}
-@keyframes drift {
-  from { transform: translateY(-5%); }
-  to { transform: translateY(105%); }
+/* App container */
+.app-container {
+  width: 94%;
+  max-width: 1100px;
+  margin: 28px auto;
+  padding: 20px;
 }
 
-/* ---------- NAVBAR ---------- */
+/* Header */
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.2rem 2rem;
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(8px) saturate(160%);
-  border-bottom: 1px solid rgba(255,124,186,0.15);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #ff7cc8, #80d0ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.nav-links a {
-  margin-left: 1.2rem;
-  text-decoration: none;
-  color: #333;
-  font-weight: 600;
-  transition: all 0.3s ease;
-}
-.nav-links a:hover {
-  color: #ff7cc8;
-  text-shadow: 0 0 8px rgba(255,124,186,0.5);
-}
-
-/* ---------- GAME DETAIL / CARDS ---------- */
-.game-info-card {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  background: rgba(255,255,255,0.6);
-  border-radius: 20px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 25px rgba(255,182,193,0.2);
-  margin: 2rem auto;
-  max-width: 900px;
-  position: relative;
-  overflow: hidden;
-}
-
-.detail-image {
-  width: 200px;
-  height: 200px;
-  border-radius: 14px;
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(128,208,255,0.4);
-  animation: pulse 2.5s infinite ease-in-out;
-}
-
-/* 🔮 Efecto pulse */
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
-}
-
-.retro-title {
-  font-size: 2.6rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #ff7cc8, #80d0ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 10px rgba(255,124,186,0.3);
-  margin: 0;
-}
-
-.retro-subtitle {
-  color: #ff7cc8;
-  text-shadow: 0 2px 10px rgba(255,124,186,0.3);
-  font-size: 1.8rem;
-  margin-bottom: 1rem;
-}
-
-/* ---------- REVIEW SECTION ---------- */
-.reviews-section {
-  max-width: 900px;
-  margin: 2rem auto;
-  position: relative;
-}
-
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-}
-
-.review-card {
-  background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,250,255,0.6));
-  border-radius: 18px;
-  padding: 1rem;
-  border: 1px solid rgba(255,124,186,0.2);
-  box-shadow: 0 8px 16px rgba(255,182,193,0.25);
-  transform: scale(0.97);
-  transition: all 0.3s ease;
-}
-.review-card:hover {
-  transform: scale(1);
-  box-shadow: 0 8px 20px rgba(128,208,255,0.3);
-}
-
-.review-author {
-  font-weight: 600;
-  color: #ff7cc8;
-}
-
-/* ---------- FORMULARIO ---------- */
-.review-form {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  padding: 1.2rem;
-  background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,124,186,0.15);
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
-}
-
-.review-form input,
-.review-form textarea {
-  border: 2px solid rgba(255,124,186,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius: 12px;
-  padding: 0.7rem;
-  outline: none;
-  transition: all 0.3s;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.03);
 }
-.review-form input:focus,
-.review-form textarea:focus {
-  border-color: #80d0ff;
-  box-shadow: 0 0 5px #80d0ff;
+.logo {
+  font-size: 1.3rem;
+  color: #ffd166;
+  text-shadow: 0 3px 14px rgba(255,209,102,0.08);
+  display:flex; align-items:center; gap:8px;
 }
-.review-form button {
-  background: linear-gradient(90deg, #ff7cc8, #80d0ff);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 0.9rem;
-  font-weight: bold;
-  transition: all 0.3s;
-  cursor: pointer;
+.nav-links a {
+  color: #cfe7ff;
+  margin-left: 12px;
+  text-decoration: none;
+  opacity: 0.95;
 }
-.review-form button:hover {
-  transform: translateY(-2px) scale(1.05);
+.nav-links a:hover { transform: translateY(-2px); }
+
+/* Panels */
+.panel {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255,255,255,0.03);
 }
 
-/* ---------- RETRO ACCENT CLASSES ---------- */
-.retro-pop {
-  background: linear-gradient(135deg, rgba(255,224,247,0.08), rgba(184,232,255,0.08)),
-              repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 2px, transparent 2px 6px);
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(128,208,255,0.08);
-  padding: 1.2rem;
+/* Game list layout */
+.games-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (max-width: 760px) { .games-list { grid-template-columns: 1fr; } }
+
+/* Card: retro-pop + glass */
+.game-card {
   position: relative;
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), box-shadow 220ms;
+  cursor: default;
   overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,124,186,0.06);
+  box-shadow: 0 6px 18px rgba(11,12,22,0.45);
+}
+.game-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 18px 40px rgba(11,12,22,0.6);
 }
 
-.pixel-border {
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.1), 0 0 0 6px rgba(255,255,255,0.04);
+/* image small, tight and responsive */
+.game-image {
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,0.04);
+  transition: transform 240ms, box-shadow 240ms;
 }
+.game-card:hover .game-image { transform: scale(1.06); box-shadow: 0 6px 18px rgba(255,124,186,0.08); }
 
-.pulse { animation: retroPulse 2.2s infinite ease-in-out; }
-@keyframes retroPulse {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
+/* game info */
+.game-info b { display:block; font-size: 1rem; color: #fff; }
+.meta-line { font-size: 0.85rem; color: #cde7ffaa; margin-top: 6px; }
 
-/* ---------- MEDIA QUERIES ---------- */
-@media (max-width: 700px) {
-  .retro-title { font-size: 2rem; }
-  .detail-image { width: 160px; height: 160px; }
-  .reviews-grid { grid-template-columns: 1fr; }
+/* actions */
+.game-actions { margin-left: auto; display:flex; gap:8px; align-items:center; }
+.btn {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-weight: 600;
+  transition: transform 160ms, background 160ms;
 }
+.btn:hover { transform: translateY(-3px); background: rgba(255,255,255,0.04); }
+.btn.primary { background: linear-gradient(90deg,#6a5acd,#836fff); box-shadow: 0 6px 18px rgba(131,111,255,0.06); }
+.btn.danger { background: linear-gradient(90deg,#ff5d5d,#ff4d4d); }
+
+/* quick review area */
+.quick-review { margin-top: 10px; display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap; }
+.quick-review input { padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; }
+
+/* toast notifications (viñetas) */
+.toast-wrap { position: fixed; right: 18px; bottom: 18px; display:flex; flex-direction:column; gap:10px; z-index:1100; }
+.toast {
+  min-width: 220px;
+  max-width: 360px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  color: #fff;
+  transform-origin: right bottom;
+  animation: toast-in 260ms ease;
+}
+@keyframes toast-in { from { transform: translateY(18px) scale(0.98); opacity: 0 } to { transform: translateY(0) scale(1); opacity: 1 } }
+.toast.success { border-left: 4px solid #6ae68a; }
+.toast.warn    { border-left: 4px solid #ffd166; }
+.toast.error   { border-left: 4px solid #ff6b6b; }
+
+/* miside special */
+.miside-bg {
+  background: linear-gradient(135deg,#ffeff6 0%, #ffd9ec 100%);
+  color: #2f0b2b;
+}
+.miside-bg .game-card { background: rgba(255,255,255,0.7); color:#2b0b2a; }
+
+/* small util */
+.muted { color: #99a9c7; font-size:0.95rem; }
+.selected { outline: 2px solid rgba(131,111,255,0.12); }
