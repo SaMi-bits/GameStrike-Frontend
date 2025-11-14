@@ -90,10 +90,8 @@ gamestrike/
 │   └── styles.css         # Estilos globales
 ├── public/                # Archivos estáticos
 │   ├── images/           # Imágenes de juegos
-│   └── icons/            # Iconos
 ├── .env.example          # Ejemplo de variables de entorno
 ├── package.json
-├── vite.config.js
 └── README.md
 ```
 
@@ -217,8 +215,7 @@ Las contribuciones son bienvenidas. Por favor:
 Este proyecto está bajo la licencia MIT.
 
 ## 👥 Autor
-
-Tu Nombre - [@tu_twitter](https://twitter.com/tu_twitter)
+SaMi-bits
 
 ## 🙏 Agradecimientos
 

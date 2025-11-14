@@ -6,6 +6,7 @@ import EditModal from "../components/EditModal";
 import Toast from "../components/Toast";
 import AddGameModal from "../components/AddGameModal";
 import RatingModal from "../components/RatingModal";
+import { API_URL } from "../config/api";
 import "../styles.css";
 
 export default function Home() {
@@ -14,8 +15,6 @@ export default function Home() {
   const [addModal, setAddModal] = useState(false);
   const [ratingGame, setRatingGame] = useState(null);
   const [ratings, setRatings] = useState([]);
-
-  const API = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
   const [games, setGames] = useState([]);
   const [reviews, setReviews] = useState([]);
@@ -51,50 +50,56 @@ export default function Home() {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API}/games`);
-      if (!res.ok) throw new Error();
+      const res = await fetch(`${API_URL}/games`);
+      if (!res.ok) throw new Error("Error al cargar juegos");
       const data = await res.json();
       setGames(Array.isArray(data) ? data : data.games || []);
-    } catch {
+    } catch (error) {
+      console.error(error);
       pushToast("Error al cargar juegos", "error");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`${API}/reviews`);
-      if (!res.ok) throw new Error();
+      const res = await fetch(`${API_URL}/reviews`);
+      if (!res.ok) throw new Error("Error al cargar reseñas");
       const data = await res.json();
       setReviews(Array.isArray(data) ? data : data.reviews || []);
-    } catch {
+    } catch (error) {
+      console.error(error);
       pushToast("Error al cargar reseñas", "warn");
     }
   };
 
   const loadGameReviews = async (gameId) => {
     try {
-      const res = await fetch(`${API}/reviews/game/${gameId}`);
+      const res = await fetch(`${API_URL}/reviews/game/${gameId}`);
+      if (!res.ok) throw new Error("Error al cargar reseñas del juego");
       const data = await res.json();
       setRatings(data);
-    } catch {
+    } catch (error) {
+      console.error(error);
       pushToast("Error cargando reseñas", "error");
     }
   };
 
   const saveReview = async (gameId, reviewData) => {
     try {
-      const res = await fetch(`${API}/reviews/${gameId}`, {
+      const res = await fetch(`${API_URL}/reviews/${gameId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewData)
       });
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error("Error al guardar reseña");
 
       pushToast("Reseña guardada ⭐", "success");
       loadGameReviews(gameId);
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       pushToast("No se pudo guardar la reseña", "error");
     }
   };
@@ -105,69 +110,22 @@ export default function Home() {
   }, []);
 
   // ---------------------------
-  // GUARDAR (crear o editar)
-  // ---------------------------
-  const saveGame = async (e) => {
-    e.preventDefault();
-    const method = editing ? "PUT" : "POST";
-    const url = editing ? `${API}/games/${editing}` : `${API}/games`;
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newGame)
-      });
-      if (!res.ok) throw new Error();
-
-      pushToast(editing ? "Juego actualizado" : "Juego creado");
-      setNewGame({ name: "", genre: "", platform: "", releaseYear: "", imageUrl: "" });
-      setEditing(null);
-      fetchGames();
-
-    } catch {
-      pushToast("No se pudo guardar", "error");
-    }
-  };
-
-  // ---------------------------
-  // GUARDAR DESDE EDIT MODAL
-  // ---------------------------
-  const saveEditedGame = async (updatedGame) => {
-    try {
-      const res = await fetch(`${API}/games/${editing}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedGame)
-      });
-
-      if (!res.ok) throw new Error();
-
-      pushToast("Juego actualizado 🎉");
-      setEditing(null);
-      fetchGames();
-
-    } catch {
-      pushToast("Error al actualizar", "error");
-    }
-  };
-
-  // ---------------------------
   // ELIMINAR JUEGO
   // ---------------------------
   const deleteGame = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este juego?")) return;
 
     try {
-      const res = await fetch(`${API}/games/${id}`, {
+      const res = await fetch(`${API_URL}/games/${id}`, {
         method: "DELETE",
       });
 
-      if (!res.ok) throw new Error();
+      if (!res.ok) throw new Error("Error al eliminar");
       pushToast("Juego eliminado ✔");
       fetchGames();
 
-    } catch {
+    } catch (error) {
+      console.error(error);
       pushToast("Error al eliminar", "error");
     }
   };
@@ -193,10 +151,11 @@ export default function Home() {
     <div className="app-container">
       <Toast items={toasts} onRemove={removeToast} />
 
-      {/* NAVBAR RETRO POP */}
+      {/* NAVBAR RETRO POP - SIN LOGO FEO */}
       <header className="topbar">
         <div className="logo-area">
-          <img src="/icons/controller.png" className="logo-icon" />
+          {/* Emoji de control en lugar de imagen */}
+          <span className="logo-emoji">🎮</span>
           <h1>GameStrike</h1>
         </div>
 
@@ -207,14 +166,16 @@ export default function Home() {
         </nav>
 
         <button className="btn primary" onClick={() => setAddModal(true)}>
-          Agregar Juego
+          ➕ Agregar Juego
         </button>
       </header>
 
       {/* LISTA DE JUEGOS */}
       <section className="panel panel-games">
         {loading ? (
-          <p>Cargando…</p>
+          <p className="loading-text">Cargando juegos...</p>
+        ) : games.length === 0 ? (
+          <p className="muted">No hay juegos aún. ¡Agrega el primero!</p>
         ) : (
           <ul className="games-list">
             {games.map((g) => (
@@ -257,18 +218,19 @@ export default function Home() {
           onClose={() => setEditing(null)}
           onSave={async (updated) => {
             try {
-              const res = await fetch(`${API}/games/${editing}`, {
+              const res = await fetch(`${API_URL}/games/${editing}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updated)
               });
-              if (!res.ok) throw new Error();
+              
+              if (!res.ok) throw new Error("Error al actualizar");
 
-              pushToast("Juego actualizado", "success");
+              pushToast("Juego actualizado 🎉", "success");
               setEditing(null);
               fetchGames();
-            } catch (err) {
-              console.error(err);
+            } catch (error) {
+              console.error(error);
               pushToast("Error al editar", "error");
             }
           }}
@@ -281,18 +243,19 @@ export default function Home() {
           onClose={() => setAddModal(false)}
           onSave={async (gameData) => {
             try {
-              const res = await fetch(`${API}/games`, {
+              const res = await fetch(`${API_URL}/games`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(gameData)
               });
 
-              if (!res.ok) throw new Error();
+              if (!res.ok) throw new Error("Error al agregar");
 
               pushToast("Juego agregado 🎉");
               setAddModal(false);
               fetchGames();
-            } catch {
+            } catch (error) {
+              console.error(error);
               pushToast("Error al agregar", "error");
             }
           }}

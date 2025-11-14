@@ -12,14 +12,25 @@ export default function GameDetail() {
 
   const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
 
+  // Función helper para manejar rutas de imágenes
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return "/placeholder-game.png";
+    if (imageUrl.startsWith('http')) return imageUrl;
+    return `/images/${imageUrl}`;
+  };
+
   useEffect(() => {
     const fetchGameData = async () => {
       try {
         const resGame = await fetch(`${API}/games/${id}`);
         const resReviews = await fetch(`${API}/reviews`);
+        
+        if (!resGame.ok) throw new Error("Error al cargar el juego");
+        
         const gameData = await resGame.json();
         const allReviews = await resReviews.json();
         const filtered = allReviews.filter((r) => r.gameId?._id === id || r.gameId === id);
+        
         setGame(gameData);
         setReviews(filtered);
       } catch (err) {
@@ -29,7 +40,7 @@ export default function GameDetail() {
       }
     };
     fetchGameData();
-  }, [id]);
+  }, [id, API]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,13 +71,17 @@ export default function GameDetail() {
 
       <div className="game-info-card">
         {game?.imageUrl && (
-          <img src={`/images/${game.imageUrl}`} alt={game.name} className="detail-image" />
+          <img 
+            src={getImageUrl(game.imageUrl)} 
+            alt={game.name} 
+            className="detail-image" 
+          />
         )}
         <div className="info">
           <h1 className="retro-title">{game?.name}</h1>
-          <p><strong>🎮 Plataforma:</strong> {game.platform}</p>
-          <p><strong>🌸 Género:</strong> {game.genre}</p>
-          <p><strong>🕓 Año:</strong> {game.releaseYear}</p>
+          <p><strong>🎮 Plataforma:</strong> {game?.platform}</p>
+          <p><strong>🌸 Género:</strong> {game?.genre}</p>
+          <p><strong>🕓 Año:</strong> {game?.releaseYear}</p>
         </div>
       </div>
 

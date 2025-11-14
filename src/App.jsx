@@ -10,8 +10,11 @@ export default function App() {
     <BrowserRouter>
       <div className="app-container">
         <nav className="navbar">
-          <h1>🎮 GameStrike</h1>
-          <div>
+          <div className="logo-area">
+            <span className="logo-emoji">🎮</span>
+            <h1>GameStrike</h1>
+          </div>
+          <div className="nav-links">
             <Link to="/">Inicio</Link>
             <Link to="/about">Acerca de</Link>
             <Link to="/reviews">Reseñas</Link>

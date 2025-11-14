@@ -4,6 +4,15 @@ import StarRating from "./StarRating";
 export default function GameCard({ game, onSelect, onEdit, onDelete, onRate }) {
   const [showActions, setShowActions] = useState(false);
 
+  // Función helper para manejar rutas de imágenes consistentemente
+  const getImageUrl = (imageUrl) => {
+    if (!imageUrl) return "/placeholder-game.png";
+    // Si ya incluye http/https, usar directamente
+    if (imageUrl.startsWith('http')) return imageUrl;
+    // Si no, asumir que está en /images/
+    return `/images/${imageUrl}`;
+  };
+
   return (
     <li
       className="game-card retro-card"
@@ -12,7 +21,7 @@ export default function GameCard({ game, onSelect, onEdit, onDelete, onRate }) {
     >
       {/* Imagen */}
       <img
-        src={game.imageUrl || "/placeholder-game.png"}
+        src={getImageUrl(game.imageUrl)}
         className="game-image pixel-shadow"
         alt={game.name}
         onClick={() => onSelect(game)}
