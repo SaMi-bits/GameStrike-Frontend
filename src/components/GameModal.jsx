@@ -1,5 +1,6 @@
+// src/components/GameModal.jsx
 import React from "react";
-import "./modal.css";
+import "../styles.css";
 
 export default function GameModal({ game, onClose, onEdit, onDelete }) {
   if (!game) return null;
@@ -7,24 +8,28 @@ export default function GameModal({ game, onClose, onEdit, onDelete }) {
   return (
     <div className="modal-overlay">
       <div className="modal retro-pop">
+        
+        <h2 className="retro-title">{game.name}</h2>
 
-        <span className="close-btn" onClick={onClose}>✖</span>
+        <img 
+          src={`/images/${game.imageUrl}`} 
+          alt={game.name} 
+          className="modal-image"
+        />
 
-        <h2 className="retro-accent">{game.name}</h2>
+        <p className="meta-line">{game.genre} — {game.platform}</p>
 
-        <img className="modal-img pixel-border" src={game.image} />
-
-        <p><b>Género:</b> {game.genre}</p>
-        <p><b>Plataforma:</b> {game.platform}</p>
-        <p><b>Año:</b> {game.year}</p>
-
-        <div className="modal-buttons">
-          <button className="btn-edit pulse" onClick={() => onEdit(game)}>
-            Editar ✏
+        <div className="modal-actions">
+          <button className="btn primary" onClick={() => onEdit(game)}>
+            ✏️ Editar
           </button>
 
-          <button className="btn-delete" onClick={() => onDelete(game._id)}>
-            Eliminar 🗑
+          <button className="btn danger" onClick={() => onDelete(game._id)}>
+            🗑️ Eliminar
+          </button>
+
+          <button className="btn" onClick={onClose}>
+            ❌ Cerrar
           </button>
         </div>
 

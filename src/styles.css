@@ -151,3 +151,75 @@ body {
 /* small util */
 .muted { color: #99a9c7; font-size:0.95rem; }
 .selected { outline: 2px solid rgba(131,111,255,0.12); }
+/* Sakura drifting effect */
+.game-card::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -20%;
+  width: 160%;
+  height: 160%;
+  opacity: 0.06;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"><path fill="%23ff9ad9" d="M10 .5c1.6 1.8 3 4.6.1 6.7-3 2.2-1 4.3.1 6.5 1.1 2.2-.8 4.3-6.2 0C-1 11.5 3.3 2 10 .5z"/></svg>');
+  background-repeat: repeat;
+  animation: sakuraFloat 14s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes sakuraFloat {
+  0%   { transform: translateY(-12%); }
+  100% { transform: translateY(110%); }
+}
+.game-card {
+  backdrop-filter: blur(6px) saturate(140%);
+  background: linear-gradient(135deg,
+    rgba(255,224,247,0.06),
+    rgba(184,232,255,0.06)
+  );
+  border: 1px solid rgba(255,124,186,0.12);
+  box-shadow:
+    0 8px 30px rgba(128,208,255,0.06),
+    inset 0 -6px 20px rgba(255,124,186,0.03);
+}
+.game-card:hover {
+  box-shadow:
+    0 16px 44px rgba(128,208,255,0.28),
+    0 0 20px rgba(255,124,186,0.25);
+  transform: translateY(-6px) scale(1.02);
+}
+.game-image {
+  border: 2px solid rgba(255,130,210,0.35);
+  box-shadow:
+    0 6px 12px rgba(255,130,210,0.18),
+    inset 0 0 12px rgba(169,216,255,0.10);
+}
+
+.game-card:hover .game-image {
+  transform: scale(1.08) rotate(-2deg);
+  box-shadow: 0 8px 22px rgba(255,130,210,0.30);
+}
+.game-info b {
+  color: #ffd6f5;
+  text-shadow:
+    0 0 6px rgba(255,132,220,0.4),
+    0 2px 12px rgba(148,212,255,0.25);
+  letter-spacing: 0.5px;
+}
+.btn {
+  background: linear-gradient(135deg,#ffd0f6,#b4e2ff);
+  color: #5b2b62;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 12px rgba(255,124,186,0.35);
+}
+
+.btn.danger {
+  background: linear-gradient(135deg,#ff7b9c,#ffb0c1);
+  color: white;
+}
