@@ -1,58 +1,53 @@
-// src/components/GameCard.jsx
-import React from "react";
+import React, { useState } from "react";
+import StarRating from "./StarRating";
 
-export default function GameCard({ game, onEdit, onDelete, onSelect }) {
+export default function GameCard({ game, onSelect, onEdit, onDelete, onRate }) {
+  const [showActions, setShowActions] = useState(false);
+
   return (
-    <li className="game-card" title={game.name}>
-      <div className="game-card">
-        <button
-          onClick={() => onSelect && onSelect(game)} 
-          className="game-link"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            textDecoration: "none",
-            color: "inherit",
-            border: "none",
-            background: "none",
-            cursor: "pointer"
-          }}
-        >
-          {game.imageUrl ? (
-            <img
-              className="game-image"
-              src={`/images/${game.imageUrl}`}
-              alt={game.name}
-            />
-          ) : (
-            <div style={{
-              width: 96,
-              height: 96,
-              borderRadius: 10,
-              background: "linear-gradient(90deg,#222,#333)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#999"
-            }}>
-              No Img
-            </div>
-          )}
+    <li
+      className="game-card retro-card"
+      onMouseEnter={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
+    >
+      {/* Imagen */}
+      <img
+        src={game.imageUrl || "/placeholder-game.png"}
+        className="game-image pixel-shadow"
+        alt={game.name}
+        onClick={() => onSelect(game)}
+      />
 
-          <div className="game-info">
-            <b>{game.name}</b>
-            <div className="meta-line">
-              {game.genre || "—"} — {game.platform || "—"} — {game.releaseYear || "—"}
-            </div>
-          </div>
-        </button>
+      {/* Información */}
+      <div className="game-info">
+        <b className="game-title neon-text">{game.name}</b>
+        <p className="meta-line">{game.genre} • {game.platform}</p>
+        <p className="meta-line">Año: {game.releaseYear}</p>
 
-        <div className="game-actions">
-          <button className="btn" onClick={() => onEdit(game)}>✏️</button>
-          <button className="btn danger" onClick={() => onDelete(game._id || game.id)}>🗑️</button>
-        </div>
+        {/* Estrellas dentro de la card */}
+        <StarRating rating={game.rating || 0} small />
       </div>
+
+      {/* BOTONES RETRO-POP */}
+      {showActions && (
+        <div className="card-actions pop-in">
+          <button className="btn retro-btn" onClick={() => onSelect(game)}>
+            🔍 Info
+          </button>
+
+          <button className="btn retro-btn" onClick={() => onEdit(game)}>
+            ✏️ Editar
+          </button>
+
+          <button className="btn purple" onClick={() => onRate(game)}>
+            ⭐ Calificar
+          </button>
+
+          <button className="btn retro-btn danger" onClick={() => onDelete(game._id)}>
+            ❌ Eliminar
+          </button>
+        </div>
+      )}
     </li>
   );
 }

@@ -223,3 +223,458 @@ body {
   background: linear-gradient(135deg,#ff7b9c,#ffb0c1);
   color: white;
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.25s ease-out;
+  z-index: 2000;
+}
+
+.modal-content {
+  background: rgba(255,255,255,0.85);
+  border-radius: 22px;
+  padding: 24px;
+  width: 90%;
+  max-width: 420px;
+  animation: popup 0.35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+}
+
+@keyframes popup {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+  margin: 0 0 12px 0;
+  font-weight: 900;
+  font-size: 1.6rem;
+  background: linear-gradient(90deg,#ff7cc8,#80d0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-img-box {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.modal-img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 3px solid rgba(255,255,255,0.6);
+}
+
+.modal-form input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border: 2px solid rgba(0,0,0,0.1);
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+/* ===========================
+   🌸 MODAL RETRO POP Y2K
+   =========================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px);
+  padding: 2rem;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 520px;
+  border: 3px solid rgba(255,124,186,0.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25),
+              0 0 14px rgba(255,124,200,0.25);
+  animation: popup 0.35s cubic-bezier(.26,1.4,.48,1.12);
+}
+
+@keyframes popup {
+  0%   { transform: scale(0.7); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.modal-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 800;
+  text-align: center;
+
+  background: linear-gradient(
+      135deg,
+      #ff7cc8,
+      #c084fc,
+      #80d0ff
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-image {
+  width: 94%;
+  height: 260px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  display: block;
+  box-shadow: 0 4px 16px rgba(255,124,186,0.45);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.4rem;
+}
+
+.modal-btn {
+  padding: 0.8rem 1.3rem;
+  border-radius: 16px;
+  cursor: pointer;
+  border: none;
+  font-weight: 700;
+  transition: 0.25s;
+}
+
+.modal-btn:hover {
+  transform: translateY(-3px);
+}
+
+.modal-btn.edit {
+  background: linear-gradient(90deg,#6a5acd,#836fff);
+  color: white;
+}
+.modal-btn.delete {
+  background: linear-gradient(90deg,#ff5d5d,#ff4d4d);
+  color: white;
+}
+.modal-btn.close {
+  background: rgba(255,255,255,0.6);
+  color: #333;
+}
+
+/* ======================
+   🌐 TOP NAV RETRO POP
+   ====================== */
+.topbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  margin-bottom: 1.4rem;
+
+  background: rgba(255,255,255,0.09);
+  border: 2px solid rgba(255,124,186,0.25);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-icon {
+  width: 36px;
+  filter: drop-shadow(0 0 6px rgba(255,124,186,0.4));
+}
+
+.topbar h1 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ff7cc8, #c084fc, #80d0ff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+
+  transition: 0.25s;
+}
+
+.nav-links a:hover {
+  color: #ff7cc8;
+  transform: translateY(-2px);
+}
+/* ===== MODAL GENERAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* MODAL CONTENEDOR */
+.modal-box {
+  width: 95%;
+  max-width: 520px;
+  max-height: 85vh;
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(12px) saturate(130%);
+  padding: 22px;
+  border-radius: 22px;
+  overflow-y: auto;          /* ✔ scroll interno */
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  animation: popIn 0.25s ease;
+  position: relative;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Botón X */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #e00;
+  user-select: none;
+}
+
+/* Sección de reseñas dentro del modal */
+.modal-review-list {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px solid rgba(0,0,0,0.1);
+}
+.modal-review-item {
+  background: rgba(255,255,255,0.65);
+  padding: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* Estrellas animadas */
+.star {
+  cursor: pointer;
+  font-size: 2rem;
+  transition: transform 0.15s;
+}
+.star:hover {
+  transform: scale(1.2);
+}
+/* ----------------------------------------------
+      RETRO POP JAPAN DREAM – CARD STYLE
+---------------------------------------------- */
+
+.retro-card {
+  position: relative;
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,124,186,0.15);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.retro-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+}
+
+/* Imagen con pixel-shadow */
+.pixel-shadow {
+  box-shadow: 0 0 0 4px rgba(255,255,255,0.05),
+              0 0 0 6px rgba(255,124,186,0.05);
+}
+
+/* Texto neón */
+.neon-text {
+  color: #ff9bd3;
+  text-shadow: 0 0 6px rgba(255,124,186,0.6),
+               0 0 14px rgba(255,124,186,0.3);
+}
+
+/* Acciones */
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pop-in {
+  animation: popIn 0.25s ease-out;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateX(10px) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Botón retro kawaii */
+.retro-btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: linear-gradient(90deg, rgba(255,124,186,0.15), rgba(128,208,255,0.1));
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-shadow: 0 0 4px rgba(255,255,255,0.4);
+  transition: 0.15s ease;
+}
+
+.retro-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-3px);
+}
+
+.retro-btn.danger {
+  border-color: rgba(255,80,80,0.4);
+  background: linear-gradient(90deg, rgba(255,80,80,0.2), rgba(255,120,120,0.15));
+}
+
+.retro-btn.danger:hover {
+  background: rgba(255,50,50,0.4);
+}
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 25, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 900;
+}
+
+/* Animación */
+.fade-in { animation: fadeIn 0.3s ease; }
+.pop-in { animation: popIn 0.25s ease-out; }
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Modal */
+.rating-modal {
+  width: 90%;
+  max-width: 500px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,124,186,0.3);
+  border-radius: 20px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  color: white;
+}
+
+/* Imagen */
+.rating-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  box-shadow: 0 0 10px rgba(255,124,186,0.5);
+}
+
+/* Secciones */
+.section-title {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #ffb9e9;
+}
+
+/* Progreso */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 10px;
+  background: linear-gradient(90deg, #ff7cc8, #8ecbff);
+}
+
+/* Reseñas */
+.reviews-box {
+  background: rgba(255,255,255,0.1);
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+.review-card {
+  background: rgba(255,255,255,0.12);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
