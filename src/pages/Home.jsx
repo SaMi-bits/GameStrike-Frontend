@@ -1,4 +1,3 @@
-// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import GameCard from "../components/GameCard";
 import GameModal from "../components/GameModal";
@@ -6,7 +5,8 @@ import EditModal from "../components/EditModal";
 import Toast from "../components/Toast";
 import AddGameModal from "../components/AddGameModal";
 import RatingModal from "../components/RatingModal";
-import { API_URL } from "../config/api";
+import Spinner from "../components/Spinner";
+import { API_URL } from "../config/api"; // 🔥 FIX: Usar API_URL consistentemente
 import "../styles.css";
 
 export default function Home() {
@@ -17,36 +17,21 @@ export default function Home() {
   const [ratings, setRatings] = useState([]);
 
   const [games, setGames] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const [newGame, setNewGame] = useState({
-    name: "",
-    genre: "",
-    platform: "",
-    releaseYear: "",
-    imageUrl: ""
-  });
 
   const [toasts, setToasts] = useState([]);
 
-  // ---------------------------
   // NOTIFICACIONES
-  // ---------------------------
   const pushToast = (message, type = "success", ttl = 3800) => {
     const id = Date.now() + Math.random();
-    setToasts((s) => [{ id, message, type }, ...s]);
-    if (ttl > 0) setTimeout(() =>
-      setToasts((s) => s.filter((x) => x.id !== id)), ttl);
+    setToasts((s) => [{ id, message, type, ttl }, ...s]);
   };
 
   const removeToast = (id) => {
     setToasts((s) => s.filter((x) => x.id !== id));
   };
 
-  // ---------------------------
   // CARGAR JUEGOS
-  // ---------------------------
   const fetchGames = async () => {
     setLoading(true);
     try {
@@ -59,18 +44,6 @@ export default function Home() {
       pushToast("Error al cargar juegos", "error");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const fetchReviews = async () => {
-    try {
-      const res = await fetch(`${API_URL}/reviews`);
-      if (!res.ok) throw new Error("Error al cargar reseñas");
-      const data = await res.json();
-      setReviews(Array.isArray(data) ? data : data.reviews || []);
-    } catch (error) {
-      console.error(error);
-      pushToast("Error al cargar reseñas", "warn");
     }
   };
 
@@ -98,6 +71,9 @@ export default function Home() {
 
       pushToast("Reseña guardada ⭐", "success");
       loadGameReviews(gameId);
+      
+      // 🔥 FIX: Recargar juegos después de guardar reseña
+      fetchGames();
     } catch (error) {
       console.error(error);
       pushToast("No se pudo guardar la reseña", "error");
@@ -106,12 +82,9 @@ export default function Home() {
 
   useEffect(() => {
     fetchGames();
-    fetchReviews();
   }, []);
 
-  // ---------------------------
   // ELIMINAR JUEGO
-  // ---------------------------
   const deleteGame = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este juego?")) return;
 
@@ -123,7 +96,6 @@ export default function Home() {
       if (!res.ok) throw new Error("Error al eliminar");
       pushToast("Juego eliminado ✔");
       fetchGames();
-
     } catch (error) {
       console.error(error);
       pushToast("Error al eliminar", "error");
@@ -131,30 +103,17 @@ export default function Home() {
   };
 
   const startEdit = (game) => {
-    setEditing(game._id || game.id);
-
-    setNewGame({
-      name: game.name,
-      genre: game.genre,
-      platform: game.platform,
-      releaseYear: game.releaseYear,
-      imageUrl: game.imageUrl
-    });
-
+    setEditing(game);
     pushToast("Editando " + game.name);
   };
 
-  // ------------------------------------------------------
-  // 🔥 UI
-  // ------------------------------------------------------
   return (
     <div className="app-container">
       <Toast items={toasts} onRemove={removeToast} />
 
-      {/* NAVBAR RETRO POP - SIN LOGO FEO */}
+      {/* NAVBAR */}
       <header className="topbar">
         <div className="logo-area">
-          {/* Emoji de control en lugar de imagen */}
           <span className="logo-emoji">🎮</span>
           <h1>GameStrike</h1>
         </div>
@@ -173,7 +132,7 @@ export default function Home() {
       {/* LISTA DE JUEGOS */}
       <section className="panel panel-games">
         {loading ? (
-          <p className="loading-text">Cargando juegos...</p>
+          <Spinner message="Cargando juegos..." />
         ) : games.length === 0 ? (
           <p className="muted">No hay juegos aún. ¡Agrega el primero!</p>
         ) : (
@@ -214,11 +173,11 @@ export default function Home() {
       {/* MODAL DE EDICIÓN */}
       {editing && (
         <EditModal
-          game={newGame}
+          game={editing}
           onClose={() => setEditing(null)}
           onSave={async (updated) => {
             try {
-              const res = await fetch(`${API_URL}/games/${editing}`, {
+              const res = await fetch(`${API_URL}/games/${editing._id || editing.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updated)
@@ -243,7 +202,7 @@ export default function Home() {
           onClose={() => setAddModal(false)}
           onSave={async (gameData) => {
             try {
-              const res = await fetch(`${API_URL}/games`, {
+              const res = await fetch(`${API_URL}/api/games`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(gameData)

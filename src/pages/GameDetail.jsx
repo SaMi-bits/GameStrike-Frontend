@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { API_URL, getImageUrl } from "../config/api"; // 🔥 FIX: Usar helpers de API
+import Spinner from "../components/Spinner";
 import "../styles.css";
 
 export default function GameDetail() {
@@ -10,29 +12,19 @@ export default function GameDetail() {
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
 
-  const API = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
-
-  // Función helper para manejar rutas de imágenes
-  const getImageUrl = (imageUrl) => {
-    if (!imageUrl) return "/placeholder-game.png";
-    if (imageUrl.startsWith('http')) return imageUrl;
-    return `/images/${imageUrl}`;
-  };
-
   useEffect(() => {
     const fetchGameData = async () => {
       try {
-        const resGame = await fetch(`${API}/games/${id}`);
-        const resReviews = await fetch(`${API}/reviews`);
+        const resGame = await fetch(`${API_URL}/api/games/${id}`);
+        const resReviews = await fetch(`${API_URL}/api/reviews/game/${id}`);
         
         if (!resGame.ok) throw new Error("Error al cargar el juego");
         
         const gameData = await resGame.json();
-        const allReviews = await resReviews.json();
-        const filtered = allReviews.filter((r) => r.gameId?._id === id || r.gameId === id);
+        const reviewsData = resReviews.ok ? await resReviews.json() : [];
         
         setGame(gameData);
-        setReviews(filtered);
+        setReviews(Array.isArray(reviewsData) ? reviewsData : []);
       } catch (err) {
         console.error("Error al cargar datos:", err);
       } finally {
@@ -40,20 +32,32 @@ export default function GameDetail() {
       }
     };
     fetchGameData();
-  }, [id, API]);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!newReview.author.trim() || !newReview.comment.trim()) {
+      alert("Por favor completa todos los campos");
+      return;
+    }
+    
     setSending(true);
     try {
-      const res = await fetch(`${API}/reviews`, {
+      const res = await fetch(`${API_URL}/api/reviews/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...newReview, gameId: id }),
+        body: JSON.stringify({ 
+          text: newReview.comment,
+          rating: newReview.rating,
+          author: newReview.author
+        }),
       });
+      
       if (!res.ok) throw new Error("Error al enviar reseña");
+      
       const saved = await res.json();
-      setReviews([...reviews, saved]);
+      setReviews([saved, ...reviews]);
       setNewReview({ author: "", comment: "", rating: 5 });
     } catch (err) {
       console.error(err);
@@ -63,7 +67,7 @@ export default function GameDetail() {
     }
   };
 
-  if (loading) return <p className="loading-text">Cargando datos del juego...</p>;
+  if (loading) return <Spinner message="Cargando datos del juego..." />;
 
   return (
     <div className="game-detail retro-bg">
@@ -92,9 +96,9 @@ export default function GameDetail() {
         ) : (
           <div className="reviews-grid">
             {reviews.map((r, i) => (
-              <div key={i} className="review-card pop-in">
-                <p className="review-author">⭐ {r.rating}/10 — {r.author}</p>
-                <p>{r.comment}</p>
+              <div key={r._id || i} className="review-card pop-in">
+                <p className="review-author">⭐ {r.rating}/5 — {r.author}</p>
+                <p>{r.text || r.comment}</p>
               </div>
             ))}
           </div>
@@ -117,7 +121,7 @@ export default function GameDetail() {
           <input
             type="number"
             min="0"
-            max="10"
+            max="5"
             value={newReview.rating}
             onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
           />
