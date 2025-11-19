@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Reviews from "./pages/Reviews.jsx";
+import Stats from "./pages/Stats";
 import "./styles.css";
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
             <Link to="/">Inicio</Link>
             <Link to="/about">Acerca de</Link>
             <Link to="/reviews">Reseñas</Link>
+            <Link to="/stats">Estadísticas</Link>
           </div>
         </nav>
 
@@ -25,6 +27,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/stats" element={<Stats />} />
         </Routes>
       </div>
     </BrowserRouter>
