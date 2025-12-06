@@ -6,7 +6,7 @@ import Toast from "../components/Toast";
 import AddGameModal from "../components/AddGameModal";
 import RatingModal from "../components/RatingModal";
 import Spinner from "../components/Spinner";
-import { API_URL } from "../config/api"; // 🔥 FIX: Usar API_URL consistentemente
+import { API_URL } from "../config/api";
 import "../styles.css";
 
 export default function Home() {
@@ -21,7 +21,7 @@ export default function Home() {
 
   const [toasts, setToasts] = useState([]);
 
-  // NOTIFICACIONES
+  // TOASTS
   const pushToast = (message, type = "success", ttl = 3800) => {
     const id = Date.now() + Math.random();
     setToasts((s) => [{ id, message, type, ttl }, ...s]);
@@ -35,8 +35,9 @@ export default function Home() {
   const fetchGames = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/games`);
+      const res = await fetch(`${API_URL}/api/games`);
       if (!res.ok) throw new Error("Error al cargar juegos");
+
       const data = await res.json();
       setGames(Array.isArray(data) ? data : data.games || []);
     } catch (error) {
@@ -47,10 +48,12 @@ export default function Home() {
     }
   };
 
+  // CARGAR RESEÑAS
   const loadGameReviews = async (gameId) => {
     try {
-      const res = await fetch(`${API_URL}/reviews/game/${gameId}`);
-      if (!res.ok) throw new Error("Error al cargar reseñas del juego");
+      const res = await fetch(`${API_URL}/api/reviews/game/${gameId}`);
+      if (!res.ok) throw new Error("Error al cargar reseñas");
+
       const data = await res.json();
       setRatings(data);
     } catch (error) {
@@ -59,9 +62,10 @@ export default function Home() {
     }
   };
 
+  // GUARDAR RESEÑA
   const saveReview = async (gameId, reviewData) => {
     try {
-      const res = await fetch(`${API_URL}/reviews/${gameId}`, {
+      const res = await fetch(`${API_URL}/api/reviews/${gameId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewData)
@@ -71,8 +75,6 @@ export default function Home() {
 
       pushToast("Reseña guardada ⭐", "success");
       loadGameReviews(gameId);
-      
-      // 🔥 FIX: Recargar juegos después de guardar reseña
       fetchGames();
     } catch (error) {
       console.error(error);
@@ -89,11 +91,12 @@ export default function Home() {
     if (!window.confirm("¿Seguro que quieres eliminar este juego?")) return;
 
     try {
-      const res = await fetch(`${API_URL}/games/${id}`, {
+      const res = await fetch(`${API_URL}/api/games/${id}`, {
         method: "DELETE",
       });
 
       if (!res.ok) throw new Error("Error al eliminar");
+
       pushToast("Juego eliminado ✔");
       fetchGames();
     } catch (error) {
@@ -102,6 +105,7 @@ export default function Home() {
     }
   };
 
+  // INICIAR EDICIÓN
   const startEdit = (game) => {
     setEditing(game);
     pushToast("Editando " + game.name);
@@ -154,7 +158,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* MODAL DE JUEGO */}
+      {/* MODAL VER JUEGO */}
       {selectedGame && (
         <GameModal
           game={selectedGame}
@@ -170,19 +174,19 @@ export default function Home() {
         />
       )}
 
-      {/* MODAL DE EDICIÓN */}
+      {/* MODAL EDITAR */}
       {editing && (
         <EditModal
           game={editing}
           onClose={() => setEditing(null)}
           onSave={async (updated) => {
             try {
-              const res = await fetch(`${API_URL}/games/${editing._id || editing.id}`, {
+              const res = await fetch(`${API_URL}/api/games/${editing._id || editing.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updated)
               });
-              
+
               if (!res.ok) throw new Error("Error al actualizar");
 
               pushToast("Juego actualizado 🎉", "success");
@@ -196,13 +200,13 @@ export default function Home() {
         />
       )}
 
-      {/* MODAL DE AGREGAR */}
+      {/* MODAL AGREGAR */}
       {addModal && (
         <AddGameModal
           onClose={() => setAddModal(false)}
           onSave={async (gameData) => {
             try {
-              const res = await fetch(`${API_URL}/games`, {
+              const res = await fetch(`${API_URL}/api/games`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(gameData)
@@ -221,12 +225,14 @@ export default function Home() {
         />
       )}
 
-      {/* RATING MODAL */}
+      {/* MODAL RESEÑAS */}
       {ratingGame && (
         <RatingModal
           game={{ ...ratingGame, reviews: ratings }}
           onClose={() => setRatingGame(null)}
-          onSaveReview={(reviewData) => saveReview(ratingGame._id || ratingGame.id, reviewData)}
+          onSaveReview={(reviewData) =>
+            saveReview(ratingGame._id || ratingGame.id, reviewData)
+          }
         />
       )}
     </div>
