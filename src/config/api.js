@@ -14,7 +14,7 @@ const isDevelopment = (
 // URL del backend según el entorno
 export const API_URL = isDevelopment 
   ? "http://localhost:4000"  
-  : "https://gamestrike-api.onrender.com";  // 👈 Tu API de Render
+  : "https://gamestrike-api1.onrender.com";  // 👈 Tu API de Render
 
 console.log("🌍 Entorno:", isDevelopment ? "Desarrollo" : "Producción");
 console.log("🔗 API URL:", API_URL);
