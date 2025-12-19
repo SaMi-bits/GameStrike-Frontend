@@ -14,8 +14,8 @@ export default function Stats() {
   const fetchData = async () => {
     try {
       const [gamesRes, reviewsRes] = await Promise.all([
-        fetch(`${API}/games`),
-        fetch(`${API}/reviews`)
+        fetch(`${API}/api/games`),
+        fetch(`${API}/api/reviews`)
       ]);
       
       if (gamesRes.ok) setGames(await gamesRes.json());

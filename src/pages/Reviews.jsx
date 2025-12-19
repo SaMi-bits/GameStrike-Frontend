@@ -13,7 +13,7 @@ export default function Reviews() {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`${API}/reviews`);
+      const res = await fetch(`${API}/api/reviews`);
       if (res.ok) {
         const data = await res.json();
         console.log("Reseñas recibidas:", data); // Para debug
