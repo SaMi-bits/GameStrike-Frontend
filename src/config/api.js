@@ -1,14 +1,20 @@
 // src/config/api.js
 
 // Detectar si estamos en desarrollo o producción
-const isDevelopment = 
-  window.location.hostname === 'localhost' || 
-  window.location.hostname === '127.0.0.1';
+const isDevelopment = (
+  // Evitar errores en entornos sin `window` (SSR/test)
+  (typeof window !== 'undefined' && (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  ))
+  // Como respaldo, permitir NODE_ENV
+  || process.env.NODE_ENV === 'development'
+);
 
 // URL del backend según el entorno
 export const API_URL = isDevelopment 
-  ? "http://localhost:4000"  // Desarrollo local
-  : "https://gamestrike-api.onrender.com"; // 👈 TU URL de Render
+  ? "http://localhost:4000"  
+  : "https://gamestrike-api.onrender.com";  // 👈 Tu API de Render
 
 console.log("🌍 Entorno:", isDevelopment ? "Desarrollo" : "Producción");
 console.log("🔗 API URL:", API_URL);

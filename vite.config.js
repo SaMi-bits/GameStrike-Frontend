@@ -3,5 +3,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/GameStrike-Frontend/',  // 👈 IMPORTANTE
+  base: '/',  // 👈 Cambiar a raíz para Vercel
 })
