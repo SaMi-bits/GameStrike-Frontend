@@ -6,7 +6,7 @@ import Toast from "../components/Toast";
 import AddGameModal from "../components/AddGameModal";
 import RatingModal from "../components/RatingModal";
 import Spinner from "../components/Spinner";
-import { API_URL } from "../config/api";
+import { API_URL } from "../config/api.js";
 import "../styles.css";
 
 export default function Home() {

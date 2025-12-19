@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { API_URL, getImageUrl } from "../config/api"; // 🔥 FIX: Usar helpers de API
+import { API_URL, getImageUrl } from "../config/api.js"; // 🔥 FIX: Usar helpers de API
 import Spinner from "../components/Spinner";
 import "../styles.css";
 
